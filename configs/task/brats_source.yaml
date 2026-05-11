@@ -1,0 +1,7 @@
+defaults:
+  - /_global_patches: brats_source
+  - _base
+
+name: brats_source
+save_dir: /path/to/outputs/brats
+eval_strategy: seg_eval

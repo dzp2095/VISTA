@@ -1,0 +1,57 @@
+
+name: brats
+
+modality_order: ["t1n", "t1c", "t2w", "t2f"]
+
+expected_shape: [160, 192, 160]
+
+drop_unlabeled: true
+
+split_col: split
+subject_col: subject_id
+modality_col: modality
+img_col: img_path          
+label_col: label_path
+
+region_order: ["ET", "TC", "WT"]
+
+# ---- sources: GLI (source) / SSA+PED (target-only) ----
+sources:
+  - name: brats25_glipre
+    profile: gli
+    csv_path: /path/to/data/brain_processed/BraTS25-GLIPRE/processed.csv
+    include_splits:
+      train: ["train"]
+      val:   ["test"]
+      test:  []
+    region_map:
+      ET: [3]
+      TC: [1, 3]
+      WT: [1, 2, 3]
+
+  - name: brats24_ssa
+    profile: ssa
+    csv_path: /path/to/data/brain_processed/BraTS23-SSA/processed.csv
+    include_splits:
+      train: []                 
+      val:   []                 
+      test:  ["train", "test"]   
+    # SSA tissue evaluation: WT=(1,2,3), TC=(1,3), ET=(3)
+    region_map:
+      ET: [3]
+      TC: [1, 3]
+      WT: [1, 2, 3]
+
+  - name: brats24_ped
+    profile: ped
+    csv_path: /path/to/data/brain_processed/BraTS24-PED/processed.csv
+    include_splits:
+      train: []                 
+      val:   []                 
+      test:  ["train", "test"]   
+    # PED raw labels: ET=1, NET=2, CC=3, ED=4
+    # PED tissue evaluation: WT=(1,2,3,4), TC=(1,2,3), ET=(1)
+    region_map:
+      ET: [1]
+      TC: [1, 2, 3]
+      WT: [1, 2, 3, 4]

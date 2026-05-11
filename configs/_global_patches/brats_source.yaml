@@ -1,0 +1,61 @@
+# @package _global_
+# merge this file to global config
+
+dataset:
+  task: seg
+model:
+  in_channels: 4
+  num_classes: 3
+  spatial_dims: 3
+  channels: [32, 64, 128, 256, 512]
+  strides: [2, 2, 2, 2]
+  num_res_units: 2
+  norm: "BATCH"
+  act: "RELU"
+  dropout: 0.0
+
+training:
+  method: baseline
+  eval_on_train: true
+  
+  eval_test:
+    start_epoch: 0
+    every_n_epochs: 5
+    run_last: true
+    do_val: true
+    do_test: true
+
+  data:
+    transforms:
+      normalize: false
+      geom_aug: false
+      intensity_aug: false
+      image_size: [160, 192, 160]
+
+      mean: [0.0, 0.0, 0.0, 0.0]
+      std:  [1.0, 1.0, 1.0, 1.0]
+
+  criterion:
+    task: multilabel
+    lambda_dice: 1.0
+    lambda_bce:  1.0
+    include_background: true
+    squared_pred: false
+    jaccard: false
+    sigmoid: true
+
+evaluation:
+  per_class: true
+  class_names:
+    - ET
+    - TC
+    - WT
+
+  seg:
+    region_order: ["ET", "TC", "WT"]
+    threshold: 0.5
+
+  loss:
+    report_loss: true
+    lambda_dice: 1.0
+    lambda_bce:  1.0

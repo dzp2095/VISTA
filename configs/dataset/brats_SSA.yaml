@@ -1,0 +1,32 @@
+# dataset/brats24_gli_ssa_ped.yaml
+
+name: brats
+
+# ---- common ----
+modality_order: ["t1n", "t1c", "t2w", "t2f"]
+
+expected_shape: [160, 192, 160]
+
+drop_unlabeled: true
+
+split_col: split
+subject_col: subject_id
+modality_col: modality
+img_col: img_path
+label_col: label_path
+
+region_order: ["ET", "TC", "WT"]
+
+# ---- sources: GLI (source) / SSA+PED (target-only) ----
+sources:
+  - name: brats24_ssa
+    profile: ssa
+    csv_path: /path/to/data/brain_processed/BraTS23-SSA/processed.csv
+    include_splits:
+      train: ["train", "test"]
+      val:   []
+      test:  ["train", "test"]
+    region_map:
+      ET: [3]
+      TC: [1, 3]
+      WT: [1, 2, 3]
